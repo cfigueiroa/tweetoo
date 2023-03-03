@@ -49,4 +49,14 @@ app.get('/tweets', (_req, res) => {
   return res.send(tweetsWithAvatar);
 });
 
+app.get('/tweets/:username', (req, res) => {
+  const { username } = req.params;
+  const user = users.find((user) => user.username === username);
+  if (!user) {
+    return res.status(404).send();
+  }
+  const userTweets = tweets.filter((tweet) => tweet.username === username);
+  return res.send(userTweets);
+});
+
 app.listen(port, () => console.log(`Server is running on port ${port}`));
