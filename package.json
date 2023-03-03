@@ -1,0 +1,26 @@
+{
+  "name": "tweetoo",
+  "version": "1.0.0",
+  "description": "Tweetoo is a Twitter clone that enables users to post and engage with short messages known as tweets. This is my first backend API project utilizing Node.js and Express.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "npx nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cfigueiroa/tweetoo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cfigueiroa/tweetoo/issues"
+  },
+  "homepage": "https://github.com/cfigueiroa/tweetoo#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
