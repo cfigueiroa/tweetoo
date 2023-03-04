@@ -2,8 +2,10 @@ import express from 'express';
 import cors from 'cors';
 
 const port = 5000;
+const errorFieldsRequired = 'Todos os campos são obrigatórios!';
 const users = [];
 const tweets = [];
+
 const app = express();
 
 app.use(cors());
@@ -20,11 +22,12 @@ app.post('/sign-up', (req, res) => {
     users.push(user);
     return res.status(201).send('OK');
   }
-  return res.status(400).send('Todos os campos são obrigatórios!');
+  return res.status(400).send(errorFieldsRequired);
 });
 
 app.post('/tweets', (req, res) => {
-  const { username, tweet } = req.body;
+  const username  = req.headers.user;
+  const { tweet } = req.body;
   if (username && tweet) {
     const id = tweets.length + 1;
     const user = users.find((user) => user.username === username);
@@ -35,13 +38,16 @@ app.post('/tweets', (req, res) => {
     tweets.push(newTweet);
     return res.status(201).send('OK');
   }
-  return res.status(400).send('Todos os campos são obrigatórios!');
+  return res.status(400).send(errorFieldsRequired);
 });
 
-app.get('/tweets', (_req, res) => {
-  const count = Math.min(tweets.length, 10);
-  const startIndex = tweets.length - count;
-  const latestTweets = tweets.slice(startIndex).reverse();
+app.get('/tweets', (req, res) => {
+  const tweetsPerPage = Math.min(tweets.length, 10);
+  const page = parseInt(req.query.page);
+  const offset = tweetsPerPage * page;
+  const latestTweets = page
+    ? tweets.slice(offset - tweetsPerPage, offset).reverse()
+    : tweets.slice(tweets.length - tweetsPerPage).reverse();
   const tweetsWithAvatar = latestTweets.map((tweet) => {
     const user = users.find((user) => user.username === tweet.username);
     return { ...tweet, avatar: user.avatar };
